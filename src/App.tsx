@@ -57,8 +57,8 @@ function App() {
             title="Total das suas compras" 
             value="R$ 347.701,53" 
             icon={<ShoppingCart className="w-6 h-6" />} 
-            iconColorClass="text-orange-500 bg-orange-50 group-hover:bg-orange-100"
-            valueColorClass="text-orange-500"
+            iconColorClass="text-blue-500 bg-blue-50 group-hover:bg-blue-100"
+            valueColorClass="text-blue-600"
           />
           <KpiCard 
             title="Total das suas vendas" 
