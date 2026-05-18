@@ -1,4 +1,4 @@
-import { MapPin, Eye, DollarSign, MessageSquare } from 'lucide-react';
+import { MapPin, Eye, DollarSign } from 'lucide-react';
 
 export function MarketInsightCard() {
   return (
