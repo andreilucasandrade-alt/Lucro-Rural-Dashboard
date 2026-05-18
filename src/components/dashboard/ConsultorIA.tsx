@@ -8,8 +8,8 @@ export function ConsultorIA() {
           <Sparkles className="w-7 h-7" />
         </div>
         <div>
-          <h2 className="text-xl font-bold text-secondary mb-1">Consultor de Preços</h2>
-          <p className="text-sm text-secondary/80">Tire dúvidas sobre seus preços de compra com IA</p>
+          <h2 className="text-xl font-bold text-secondary mb-1">Consultor de Compras</h2>
+          <p className="text-sm text-secondary/80">Descubra oportunidades de economia, tendências de mercado e insights para comprar melhor seus insumos.</p>
         </div>
       </div>
       <div className="w-10 h-10 rounded-full bg-white/50 flex items-center justify-center text-primary group-hover:bg-white transition-colors duration-300">
