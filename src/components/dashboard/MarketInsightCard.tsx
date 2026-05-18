@@ -44,9 +44,8 @@ export function MarketInsightCard() {
 
 
 
-      <div className="bg-orange-50 text-orange-800 p-4 rounded-xl flex gap-3 text-sm font-medium mb-8">
-        <MessageSquare className="w-5 h-5 text-orange-500 shrink-0" />
-        <p>Suas compras estão <strong>9% acima</strong> da média do mercado.</p>
+      <div className="bg-orange-50 text-orange-800 py-3 px-2 rounded-xl text-[13px] font-medium mb-8 text-center tracking-tight">
+        Suas compras estão <strong>9% acima</strong> do preço de mercado.
       </div>
 
       <div className="space-y-4 mt-auto">
