@@ -35,9 +35,9 @@ export function MarketInsightCard() {
         {/* User Purchase Marker */}
         <div className="absolute left-[65%] -translate-x-1/2 top-1/2 -translate-y-1/2 flex flex-col items-center">
           <div className="w-4 h-4 bg-blue-500 rounded-full border-2 border-white shadow-md z-10"></div>
-          <div className="absolute top-full mt-2 flex flex-col items-center w-24">
-            <span className="text-[10px] font-bold text-blue-500 uppercase tracking-wider leading-tight">minhas compras</span>
-            <span className="text-sm font-bold text-blue-600">R$ 2.754</span>
+          <div className="absolute top-full mt-2 flex flex-col items-center w-max">
+            <span className="text-[10px] font-bold text-blue-500 uppercase tracking-wider leading-tight text-center">minhas compras</span>
+            <span className="text-sm font-bold text-blue-600 mt-0.5">R$ 2.754</span>
           </div>
         </div>
       </div>

@@ -14,15 +14,24 @@ const generateMockData = () => {
       monthIndex: i
     });
 
-    // Generate scatter points around this month
-    const numPoints = Math.floor(Math.random() * 15) + 5;
+    // Generate scatter points around this month, more dense near average
+    const numPoints = Math.floor(Math.random() * 25) + 20;
     for (let j = 0; j < numPoints; j++) {
-      const isUserPurchase = Math.random() > 0.9;
-      const price = baseValue + (Math.random() * 2000 - 1000);
+      const isUserPurchase = Math.random() > 0.95;
+      
+      // Gaussian distribution for price deviation
+      const u1 = Math.random() || 0.001; 
+      const u2 = Math.random();
+      const z = Math.sqrt(-2.0 * Math.log(u1)) * Math.cos(2.0 * Math.PI * u2);
+      let priceDev = z * 350;
+      if (priceDev > 1200) priceDev = 1200 + (Math.random() * 200);
+      if (priceDev < -1200) priceDev = -1200 - (Math.random() * 200);
+
+      const price = baseValue + priceDev;
       
       data.push({
         month: months[i],
-        monthIndex: i + (Math.random() * 0.8 - 0.4), // spread points within the month
+        monthIndex: i + (Math.random() * 0.7 - 0.35), // spread horizontally within the month
         price: price,
         type: isUserPurchase ? 'user' : (price > baseValue ? 'above' : 'below'),
         date: `${Math.floor(Math.random() * 28) + 1} ${months[i]}`,
@@ -68,12 +77,18 @@ export function PriceChart() {
           <ComposedChart margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
             <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
             <XAxis 
-              dataKey="month" 
-              type="category" 
+              dataKey="monthIndex" 
+              type="number" 
+              domain={[-0.5, 12.5]}
               allowDuplicatedCategory={false} 
               axisLine={false} 
               tickLine={false} 
               tick={{ fill: '#9ca3af', fontSize: 12 }} 
+              tickFormatter={(val) => {
+                const months = ['mai 25', 'jun 25', 'jul 25', 'ago 25', 'set 25', 'out 25', 'nov 25', 'dez 25', 'jan 26', 'fev 26', 'mar 26', 'abr 26', 'mai 26'];
+                return months[val] || '';
+              }}
+              ticks={[0,1,2,3,4,5,6,7,8,9,10,11,12]}
               dy={10}
             />
             <YAxis 
@@ -83,25 +98,30 @@ export function PriceChart() {
               axisLine={false} 
               tickLine={false} 
               tick={{ fill: '#9ca3af', fontSize: 12 }} 
-              tickFormatter={(val) => `R$ ${val.toLocaleString()}`}
+              tickFormatter={(val) => `R$ ${val.toLocaleString('pt-BR')}`}
+              width={90}
               dx={-10}
             />
             <Tooltip content={<CustomTooltip />} cursor={{ strokeDasharray: '3 3' }} />
             
+            <Scatter name="Abaixo da média" data={scatterBelow} fill="#0FB5AE" />
+            <Scatter name="Acima da média" data={scatterAbove} fill="#f97316" />
+            <Scatter name="Minhas compras" data={scatterUser} fill="#3b82f6" shape="circle" stroke="#fff" strokeWidth={2} />
+            
             <Line 
-              data={lineData} 
+              data={[
+                { ...lineData[0], monthIndex: -0.5 },
+                ...lineData,
+                { ...lineData[lineData.length - 1], monthIndex: 12.5 }
+              ]} 
               type="stepAfter" 
               dataKey="average" 
               stroke="#1D1B4B" 
-              strokeWidth={2} 
+              strokeWidth={3} 
               dot={false} 
               activeDot={false}
               legendType="none"
             />
-            
-            <Scatter name="Abaixo da média" data={scatterBelow} fill="#0FB5AE" />
-            <Scatter name="Acima da média" data={scatterAbove} fill="#f97316" />
-            <Scatter name="Minhas compras" data={scatterUser} fill="#3b82f6" shape="circle" stroke="#fff" strokeWidth={2} />
           </ComposedChart>
         </ResponsiveContainer>
       </div>

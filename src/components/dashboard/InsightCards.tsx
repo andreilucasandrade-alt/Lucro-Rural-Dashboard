@@ -76,10 +76,10 @@ export function PerformanceCard() {
         <Info className="w-4 h-4 text-gray-400" />
       </div>
       
-      <div className="flex flex-col items-center justify-center flex-1 z-10 py-4">
-        <div className="text-5xl font-bold text-secondary mb-2 tracking-tighter">86/100</div>
-        <p className="text-xs text-gray-500 text-center max-w-[200px]">
-          Você comprou melhor que a média do mercado na maior parte dos insumos.
+      <div className="flex flex-col items-center justify-center flex-1 z-10 py-2">
+        <div className="text-5xl font-bold text-secondary mb-4 tracking-tighter">86/100</div>
+        <p className="text-[13px] text-gray-600 font-medium leading-relaxed text-center px-4">
+          Sua performance comercial está ótima, mas o resultado foi impactado pelas compras de KCL acima da média do mercado.
         </p>
       </div>
 

@@ -17,7 +17,28 @@ function App() {
     'Inseticidas', 'Manejo Sanitário', 'Outros', 'Análise das Minhas Compras'
   ];
 
-  const products = ['PHO SFS', 'KCL', 'PHO MAP 11-52', 'PHO MAP 12-61', 'SAM', 'UREIA'];
+  const categoryProducts: Record<string, string[]> = {
+    'Fertilizantes': ['PHO SFS', 'KCL', 'PHO MAP 11-52', 'PHO MAP 12-61', 'SAM', 'UREIA'],
+    'Combustível': ['Diesel Comum', 'Diesel Aditivado', 'Diesel S10 Comum', 'Diesel S10 Aditivado'],
+    'Fungicida': ['FOX SUPRA', 'ABACUS HC', 'ALADE', 'APROACH POWER', 'ATIVUM', 'Across', 'Azimut', 'BLAVITY', 'Bravonil 720', 'MITRION', 'Miravis Pro', 'SPHERE MAX'],
+    'Herbicida': ['GLI 360', '2,4-D 670', 'Atrazina 500', 'CALARIS', 'Cletodim', 'DUAL GOLD', 'Diquate 200', 'GLI 480', 'Glufosinate 200 g/L', 'Soberan', 'Verdict Max', 'Zethamax'],
+    'Inseticidas': ['Premio e Shenzi', 'AMPLIGO', 'Acefato 750 g/KG', 'CURBIX 200', 'ENGEO PLENO', 'Galil', 'LANNATE', 'SPERTO', 'Talisman', 'Verdavis'],
+    'Manejo Sanitário': ['Ivermectina 1%', 'Ivermectina 3,5%'],
+    'Outros': ['EPIs', 'Lona'],
+    'Análise das Minhas Compras': ['Relatório Geral']
+  };
+
+  const products = categoryProducts[activeCategory] || [];
+
+  const handleCategoryChange = (cat: string) => {
+    setActiveCategory(cat);
+    const newProducts = categoryProducts[cat] || [];
+    if (newProducts.length > 0) {
+      setActiveProduct(newProducts[0]);
+    } else {
+      setActiveProduct('');
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-50/50 pb-12">
@@ -36,6 +57,8 @@ function App() {
             title="Total das suas compras" 
             value="R$ 347.701,53" 
             icon={<ShoppingCart className="w-6 h-6" />} 
+            iconColorClass="text-orange-500 bg-orange-50 group-hover:bg-orange-100"
+            valueColorClass="text-orange-500"
           />
           <KpiCard 
             title="Total das suas vendas" 
@@ -66,7 +89,7 @@ function App() {
               <PerformanceCard />
             </div>
             <div className="lg:col-span-3 hidden lg:flex items-end justify-center pointer-events-none">
-               <img src="/bao_de_negocio.png" alt="Personagem Bão de Negócio" className="max-h-[360px] object-contain drop-shadow-xl" />
+               <img src="/bao_de_negocio.png" alt="Personagem Bão de Negócio" className="max-h-[300px] object-contain drop-shadow-2xl -mb-4" />
             </div>
           </div>
         </div>
@@ -75,7 +98,7 @@ function App() {
         <CategoryTabs 
           categories={categories} 
           activeCategory={activeCategory} 
-          onChange={setActiveCategory} 
+          onChange={handleCategoryChange} 
         />
         <ProductTabs 
           products={products} 

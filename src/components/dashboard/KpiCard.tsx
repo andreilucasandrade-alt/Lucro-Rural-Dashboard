@@ -7,13 +7,15 @@ interface KpiCardProps {
   icon?: ReactNode;
   isMain?: boolean;
   subtitle?: string;
+  iconColorClass?: string;
+  valueColorClass?: string;
 }
 
-export function KpiCard({ title, value, icon, isMain, subtitle }: KpiCardProps) {
+export function KpiCard({ title, value, icon, isMain, subtitle, iconColorClass, valueColorClass }: KpiCardProps) {
   return (
     <div className={clsx(
-      "bg-white rounded-2xl p-6 border border-gray-100 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md hover:border-primary/30 flex flex-col justify-between group",
-      isMain && "border-primary/20"
+      "bg-white rounded-2xl p-6 border border-gray-100 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md flex flex-col justify-between group",
+      isMain ? "border-primary/20 hover:border-primary/40" : "hover:border-gray-200"
     )}>
       <div className="flex items-start justify-between mb-4">
         <div>
@@ -22,15 +24,17 @@ export function KpiCard({ title, value, icon, isMain, subtitle }: KpiCardProps) 
           </h3>
           <p className={clsx(
             "text-3xl font-bold tracking-tight",
-            isMain ? "text-secondary" : "text-primary"
+            isMain ? "text-secondary" : (valueColorClass || "text-primary")
           )}>
             {value}
           </p>
         </div>
         {icon && (
           <div className={clsx(
-            "w-12 h-12 rounded-xl flex items-center justify-center bg-gray-50 text-primary transition-colors group-hover:bg-primary/10",
-            isMain && "bg-primary/10 text-primary"
+            "w-12 h-12 rounded-xl flex items-center justify-center transition-colors",
+            isMain 
+              ? "bg-primary/10 text-primary" 
+              : (iconColorClass || "bg-gray-50 text-primary group-hover:bg-primary/10")
           )}>
             {icon}
           </div>
