@@ -80,18 +80,25 @@ function App() {
         </div>
 
         {/* Insights Section */}
-        <div className="flex flex-col gap-6 mb-12">
-          <ConsultorIA />
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-            <div className="lg:col-span-9 grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-12">
+          
+          <div className="lg:col-span-9 flex flex-col gap-6">
+            <ConsultorIA />
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <EconomyOpportunityCard />
               <TrendCard />
               <PerformanceCard />
             </div>
-            <div className="lg:col-span-3 hidden lg:flex items-end justify-center pointer-events-none">
-               <img src="/bao_de_negocio.png" alt="Personagem Bão de Negócio" className="max-h-[300px] object-contain drop-shadow-2xl -mb-4" />
-            </div>
           </div>
+
+          <div className="lg:col-span-3 hidden lg:flex flex-col items-center justify-end pointer-events-none">
+             <span className="font-bold text-secondary tracking-widest uppercase text-xs mb-4 bg-white px-4 py-1.5 rounded-full shadow-sm border border-gray-100 flex items-center gap-2">
+               <span className="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+               Bão de Negócio
+             </span>
+             <img src="/bao_de_negocio.png" alt="Personagem Bão de Negócio" className="max-h-[360px] object-contain drop-shadow-2xl" />
+          </div>
+
         </div>
 
         {/* Tabs */}
