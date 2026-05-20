@@ -1,61 +1,38 @@
 import { ComposedChart, Scatter, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { getProductDetails } from '../../utils/productData';
 
-const generateMockData = () => {
-  const data = [];
-  const months = ['mai 25', 'jun 25', 'jul 25', 'ago 25', 'set 25', 'out 25', 'nov 25', 'dez 25', 'jan 26', 'fev 26', 'mar 26', 'abr 26', 'mai 26'];
-  
-  for (let i = 0; i < months.length; i++) {
-    const baseValue = 2000 + Math.random() * 500;
-    
-    // Average line point
-    data.push({
-      month: months[i],
-      average: baseValue,
-      monthIndex: i
-    });
+interface PriceChartProps {
+  activeProduct: string;
+  activeCategory: string;
+}
 
-    // Generate scatter points around this month, more dense near average
-    const numPoints = Math.floor(Math.random() * 25) + 20;
-    for (let j = 0; j < numPoints; j++) {
-      const isUserPurchase = Math.random() > 0.95;
-      
-      // Gaussian distribution for price deviation
-      const u1 = Math.random() || 0.001; 
-      const u2 = Math.random();
-      const z = Math.sqrt(-2.0 * Math.log(u1)) * Math.cos(2.0 * Math.PI * u2);
-      let priceDev = z * 350;
-      if (priceDev > 1200) priceDev = 1200 + (Math.random() * 200);
-      if (priceDev < -1200) priceDev = -1200 - (Math.random() * 200);
+interface TooltipPayloadItem {
+  payload: {
+    date?: string;
+    price?: number;
+    supplier?: string;
+  };
+}
 
-      const price = baseValue + priceDev;
-      
-      data.push({
-        month: months[i],
-        monthIndex: i + (Math.random() * 0.7 - 0.35), // spread horizontally within the month
-        price: price,
-        type: isUserPurchase ? 'user' : (price > baseValue ? 'above' : 'below'),
-        date: `${Math.floor(Math.random() * 28) + 1} ${months[i]}`,
-        supplier: 'Fornecedor Exemplo',
-      });
-    }
-  }
-  return data;
-};
+interface CustomTooltipProps {
+  active?: boolean;
+  payload?: TooltipPayloadItem[];
+  decimals: number;
+  unit: string;
+}
 
-const data = generateMockData();
-const lineData = data.filter(d => d.average).sort((a, b) => a.monthIndex - b.monthIndex);
-const scatterBelow = data.filter(d => d.type === 'below');
-const scatterAbove = data.filter(d => d.type === 'above');
-const scatterUser = data.filter(d => d.type === 'user');
-
-const CustomTooltip = ({ active, payload }: any) => {
+const CustomTooltip = ({ active, payload, decimals, unit }: CustomTooltipProps) => {
   if (active && payload && payload.length) {
     const data = payload[0].payload;
-    if (data.price) {
+    if (data.price !== undefined) {
       return (
         <div className="bg-white p-3 rounded-lg shadow-lg border border-gray-100 text-sm">
           <p className="font-bold text-secondary mb-1">{data.date}</p>
-          <p className="text-gray-600">Preço: <span className="font-bold text-secondary">R$ {data.price.toFixed(2)}</span></p>
+          <p className="text-gray-600">
+            Preço: <span className="font-bold text-secondary">
+              R$ {data.price.toLocaleString('pt-BR', { minimumFractionDigits: decimals, maximumFractionDigits: decimals })}/{unit}
+            </span>
+          </p>
           <p className="text-gray-500 text-xs mt-1">{data.supplier}</p>
         </div>
       );
@@ -64,12 +41,15 @@ const CustomTooltip = ({ active, payload }: any) => {
   return null;
 };
 
-export function PriceChart() {
+export function PriceChart({ activeProduct, activeCategory }: PriceChartProps) {
+  const details = getProductDetails(activeProduct, activeCategory);
+  const { lineData, scatterBelow, scatterAbove, scatterUser, yDomain, decimals, subtitle, unit } = details;
+
   return (
     <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex flex-col h-[500px]">
       <div className="mb-6">
-        <h3 className="text-xl font-bold text-secondary">PHO SFS</h3>
-        <p className="text-sm text-gray-400">18% a 21% de P2O5</p>
+        <h3 className="text-xl font-bold text-secondary">{activeProduct}</h3>
+        <p className="text-sm text-gray-400">{subtitle}</p>
       </div>
 
       <div className="flex-1 w-full relative min-h-0">
@@ -94,15 +74,15 @@ export function PriceChart() {
             <YAxis 
               dataKey="price" 
               type="number" 
-              domain={[500, 6500]} 
+              domain={yDomain} 
               axisLine={false} 
               tickLine={false} 
               tick={{ fill: '#9ca3af', fontSize: 12 }} 
-              tickFormatter={(val) => `R$ ${val.toLocaleString('pt-BR')}`}
+              tickFormatter={(val) => `R$ ${val.toLocaleString('pt-BR', { minimumFractionDigits: decimals, maximumFractionDigits: decimals })}`}
               width={90}
               dx={-10}
             />
-            <Tooltip content={<CustomTooltip />} cursor={{ strokeDasharray: '3 3' }} />
+            <Tooltip content={<CustomTooltip decimals={decimals} unit={unit} />} cursor={{ strokeDasharray: '3 3' }} />
             
             <Scatter name="Abaixo da média" data={scatterBelow} fill="#0FB5AE" />
             <Scatter name="Acima da média" data={scatterAbove} fill="#f97316" />
