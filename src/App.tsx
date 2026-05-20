@@ -11,6 +11,8 @@ import { MarketInsightCard } from './components/dashboard/MarketInsightCard';
 function App() {
   const [activeCategory, setActiveCategory] = useState('Fertilizantes');
   const [activeProduct, setActiveProduct] = useState('PHO SFS');
+  const [showUserPurchases, setShowUserPurchases] = useState(true);
+  const [convertToDollar, setConvertToDollar] = useState(false);
 
   const categories = [
     'Fertilizantes', 'Combustível', 'Fungicida', 'Herbicida', 
@@ -93,8 +95,8 @@ function App() {
 
           <div className="lg:col-span-3 hidden lg:flex flex-col items-center justify-end pointer-events-none">
              <span className="font-bold text-secondary tracking-widest uppercase text-xs mb-4 bg-white px-4 py-1.5 rounded-full shadow-sm border border-gray-100 flex items-center gap-2">
-               <span className="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
-               Bão de Negócio
+                <span className="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+                Bão de Negócio
              </span>
              <img src="/bao_de_negocio.png" alt="Personagem Bão de Negócio" className="max-h-[360px] object-contain drop-shadow-2xl" />
           </div>
@@ -116,10 +118,22 @@ function App() {
         {/* Chart Area */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2">
-            <PriceChart activeProduct={activeProduct} activeCategory={activeCategory} />
+            <PriceChart 
+              activeProduct={activeProduct} 
+              activeCategory={activeCategory} 
+              showUserPurchases={showUserPurchases}
+              convertToDollar={convertToDollar}
+            />
           </div>
           <div className="lg:col-span-1">
-            <MarketInsightCard activeProduct={activeProduct} activeCategory={activeCategory} />
+            <MarketInsightCard 
+              activeProduct={activeProduct} 
+              activeCategory={activeCategory} 
+              showUserPurchases={showUserPurchases}
+              setShowUserPurchases={setShowUserPurchases}
+              convertToDollar={convertToDollar}
+              setConvertToDollar={setConvertToDollar}
+            />
           </div>
         </div>
 

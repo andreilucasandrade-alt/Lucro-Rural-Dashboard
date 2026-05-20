@@ -1,16 +1,23 @@
-import { useState } from 'react';
 import { MapPin, Eye, DollarSign } from 'lucide-react';
 import { getProductDetails } from '../../utils/productData';
 
 interface MarketInsightCardProps {
   activeProduct: string;
   activeCategory: string;
+  showUserPurchases: boolean;
+  setShowUserPurchases: (val: boolean) => void;
+  convertToDollar: boolean;
+  setConvertToDollar: (val: boolean) => void;
 }
 
-export function MarketInsightCard({ activeProduct, activeCategory }: MarketInsightCardProps) {
-  const [showUserPurchases, setShowUserPurchases] = useState(true);
-  const [convertToDollar, setConvertToDollar] = useState(false);
-
+export function MarketInsightCard({ 
+  activeProduct, 
+  activeCategory,
+  showUserPurchases,
+  setShowUserPurchases,
+  convertToDollar,
+  setConvertToDollar
+}: MarketInsightCardProps) {
   const details = getProductDetails(activeProduct, activeCategory);
   
   const usdRate = 5.15;
